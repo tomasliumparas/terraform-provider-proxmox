@@ -2,13 +2,13 @@ kind: pipeline
 name: default
 
 steps:
-- name: build
+- name: Build
   image: golang
   commands:
-  - go build  -o bin/terraform-provider-proxmox cmd/terraform-provider-proxmox/*
-  - go build -v -o bin/terraform-provisioner-proxmox cmd/terraform-provisioner-proxmox/* 
+  - go build  -o bin/terraform-provider-proxmox-${DRONE_TAG}-amd64 cmd/terraform-provider-proxmox/*
+  - go build -v -o bin/terraform-provisioner-proxmox-${DRONE_TAG}-amd64 cmd/terraform-provisioner-proxmox/* 
 
-- name: publish
+- name: Release
   image: plugins/github-release
   settings:
     api_key:
