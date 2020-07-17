@@ -1,0 +1,18 @@
+kind: pipeline
+name: default
+
+steps:
+- name: build
+  image: golang
+  commands:
+  - go build  -o bin/terraform-provider-proxmox cmd/terraform-provider-proxmox/*
+  - go build -v -o bin/terraform-provisioner-proxmox cmd/terraform-provisioner-proxmox/* 
+
+- name: publish
+  image: plugins/github-release
+  settings:
+    api_key:
+      from_secret: GITHUB_RELEASE_TOKEN
+    files: bin/*
+  when:
+    event: tag
